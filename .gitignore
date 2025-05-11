@@ -172,3 +172,10 @@ used_merges
 .virtual_documents
 /experiments
 /notebooks
+
+# Adding files/directories below - too large
+.conda/
+github/
+gurobi.lic
+gurobi.log
+oscar-mini/

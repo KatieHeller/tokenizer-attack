@@ -11,6 +11,7 @@ LLM_NORMALIZERS = {
     'claude': NFKC(),
     'command-r': NFC(),
     'gpt-neox': NFC(),
+    'qwen3': NFC(),
 }
 
 
@@ -84,5 +85,31 @@ LLM_PRETOKENIZERS = {
         ),
         ByteLevel(add_prefix_space=False, trim_offsets=True, use_regex=False),
     ]),
-    'claude': ByteLevel(add_prefix_space=False, trim_offsets=True, use_regex=True)
+    'claude': ByteLevel(add_prefix_space=False, trim_offsets=True, use_regex=True),
+    'deepseekv3': pre_tokenizers.Sequence([
+        Split(
+            pattern=Regex("\\p{N}{1,3}"),
+            behavior='isolated',
+            invert=False,
+        ),
+        Split(
+            pattern=Regex("[一-龥぀-ゟ゠-ヿ]+"),
+            behavior='isolated',
+            invert=False,
+        ),
+        Split(
+            pattern=Regex("[!\"#$%&'()*+,\\-./:;<=>?@\\[\\\\\\]^_`{|}~][A-Za-z]+|[^\r\n\\p{L}\\p{P}\\p{S}]?[\\p{L}\\p{M}]+| ?[\\p{P}\\p{S}]+[\r\n]*|\\s*[\r\n]+|\\s+(?!\\S)|\\s+"),
+            behavior='isolated',
+            invert=False,
+        ),
+        ByteLevel(add_prefix_space=False, trim_offsets=True, use_regex=False),
+    ]),
+    'qwen3': pre_tokenizers.Sequence([
+        Split(
+            pattern=Regex("(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"),
+            behavior='isolated',
+            invert=False,
+        ),
+        ByteLevel(add_prefix_space=False, trim_offsets=False, use_regex=False),
+    ]),
 }

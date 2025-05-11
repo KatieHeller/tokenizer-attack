@@ -346,7 +346,8 @@ if __name__ == "__main__":
         max_add=100,
         debug=False,
     )
-
+    
+    # print('pair_counts: ', pair_counts)
     solution = lazy_optimize(merges, pair_counts, training_counts[args.denom], **kwargs)
 
     # Sort the lang vals for convenience

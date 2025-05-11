@@ -75,7 +75,7 @@ def train_tokenizer_or_dump_frequencies(text_files: str, model_name=None):
     return tokenizer
 
 
-def train_tokenizer_spm(text_files, output_dir):
+def tokenizer_spm(text_files, output_dir):
     import sentencepiece as spm
     from utils import SentencePieceExtractor
     from os import linesep
@@ -333,11 +333,12 @@ def load_data(data_root, verbose=False, subdir=None, langlist=None):
         if not item.is_dir() or item.name.startswith("."):
             continue
 
-        if data_root.parent.name.startswith("llm") and (
-            item.name
-            not in LLM_LANGS
-        ):
-            continue
+        # Commenting this out to ignore LLM_LANGS list
+        # if data_root.parent.name.startswith("llm") and (
+        #     item.name
+        #     not in LLM_LANGS
+        # ):
+        #     continue
 
         lang = item.name
         if subdir is not None:
